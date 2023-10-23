@@ -32,7 +32,7 @@ class Tortoise:
         self.angle_deg += deg
 
     def update_history(self):
-        self.history.append(self.pos)
+        self.history.append([*self.pos, self.angle_deg])
 
     def get_history(self):
         return np.array(self.history)
