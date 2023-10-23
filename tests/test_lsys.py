@@ -21,6 +21,6 @@ def testaddrules():
 
 def teststep():
     predecessor = "A"
-    successor = test_lsys.step(predecessor)
+    successor = test_lsys.step(predecessor, 1)
     expectation = "ABA"
     assert successor == "ABA"
