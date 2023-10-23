@@ -42,5 +42,5 @@ if __name__ == "__main__":
     # test_generator = Generator(test_lsys, "A", 10)
     # print(test_generator.generate())
     test_lsys = Lsys(["F", "f", "+", "-"], {"F": "F-F+F+FF-F-F+F"})
-    test_gen = Generator(test_lsys, "F-F-F-F", 2)
+    test_gen = Generator(test_lsys, "F-F-F-F", 1)
     print(test_gen.generate_tortoise())
