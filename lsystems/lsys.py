@@ -18,9 +18,10 @@ class Lsys:
         return predecessors
 
 
-test_lsys = Lsys(["A", "B"], {"A": "AB"})
-print(test_lsys.rules)
-test_lsys.add_rules({"B": "AA"})
-print(test_lsys.rules)
-print("hello")
-test_lsys.step("A", 10)
+if __name__ == "__main__":
+    test_lsys = Lsys(["A", "B"], {"A": "AB"})
+    print(test_lsys.rules)
+    test_lsys.add_rules({"B": "AA"})
+    print(test_lsys.rules)
+    print("hello")
+    test_lsys.step("A", 10)
