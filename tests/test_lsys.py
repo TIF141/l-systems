@@ -1,4 +1,4 @@
-from lsys import Lsys
+from lsystems.lsys import Lsys
 
 def testalphabet():
     alphabet = ["a", "b"]
