@@ -33,3 +33,21 @@ def test_rotate_and_move():
     tortoise.rotate(angle_deg)
     tortoise.forward()
     assert_allclose(tortoise.pos, np.array([1 / np.sqrt(2), 1 / np.sqrt(2)]))
+
+
+def test_history_empty():
+    tortoise = Tortoise()
+    assert_array_equal(tortoise.get_history(), np.array([]))
+
+
+def test_history_draw():
+    tortoise = Tortoise()
+    tortoise.forward(draw=True)
+    assert_allclose(tortoise.get_history(), np.array([[0, 0], [1, 0]]))
+
+
+def test_history_nodraw_then_draw():
+    tortoise = Tortoise()
+    tortoise.forward()
+    tortoise.forward(draw=True)
+    assert_allclose(tortoise.get_history(), np.array([[1, 0], [2, 0]]))
