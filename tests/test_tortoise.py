@@ -1,5 +1,5 @@
 from lsystems.tortoise import Tortoise
-from numpy.testing import assert_equal, assert_array_equal, assert_allclose
+from numpy.testing import assert_array_equal, assert_allclose
 import numpy as np
 
 
