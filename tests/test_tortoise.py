@@ -48,6 +48,6 @@ def test_history_draw():
 
 def test_history_nodraw_then_draw():
     tortoise = Tortoise()
-    tortoise.forward()
+    tortoise.forward(draw=False)
     tortoise.forward(draw=True)
     assert_allclose(tortoise.get_history(), np.array([[1, 0], [2, 0]]))
