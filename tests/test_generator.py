@@ -9,5 +9,4 @@ test_gen = Generator(test_lsys, "A", 3)
 
 def test_generate():
     steps = test_gen.generate()
-    print(steps)
     assert steps[-1] == "ABAAABAB"
