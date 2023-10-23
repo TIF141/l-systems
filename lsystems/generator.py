@@ -1,4 +1,4 @@
-from lsys import Lsys
+from lsystems.lsys import Lsys
 
 
 class Generator:
@@ -14,7 +14,7 @@ class Generator:
             successors = self.lsys.step(predecessors)
             predecessors = successors
             steps.append(successors)
-        print(steps)
+        return steps
 
 
 if __name__ == "__main__":
