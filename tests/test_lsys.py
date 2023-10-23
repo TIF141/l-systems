@@ -17,3 +17,10 @@ def testaddrules():
     test_lsys.add_rules({"AB": "AAA"})
     expectation = {"A": "ABA", "B": "BBB", "AB": "AAA"}
     assert test_lsys.rules == expectation
+
+
+def teststep():
+    predecessor = "A"
+    successor = test_lsys.step(predecessor)
+    expectation = "ABA"
+    assert successor == "ABA"
