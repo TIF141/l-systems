@@ -12,11 +12,11 @@ class Tortoise:
     def get_angle_rad(self):
         return self.angle_deg * np.pi / 180
 
-    def forward(self, draw=False):
+    def forward(self, draw=True):
         if draw:
             if len(self.get_history()) == 0:
                 self.update_history()
-            elif not self.get_history()[-1] == self.pos:
+            elif not np.array_equal(self.get_history()[-1], self.pos):
                 self.update_history()
 
         x, y = self.pos[0], self.pos[1]
