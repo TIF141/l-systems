@@ -1,15 +1,19 @@
 from lsystems.lsys import Lsys
 
-def testalphabet():
-    alphabet = ["a", "b"]
-    rules = { "A" : "ABA" , "B" : "BBB"}
-    test_lsys = Lsys(alphabet, rules)
+alphabet = ["a", "b"]
+rules = {"A": "ABA", "B": "BBB"}
+test_lsys = Lsys(alphabet, rules)
 
+
+def testalphabet():
     assert test_lsys.alphabet == alphabet
 
-def testrules():
-    alphabet = ["a", "b"]
-    rules = { "A" : "ABA" , "B" : "BBB"}
-    test_lsys = Lsys(alphabet, rules)
 
+def testrules():
     assert test_lsys.rules == rules
+
+
+def testaddrules():
+    test_lsys.add_rules({"AB": "AAA"})
+    expectation = {"A": "ABA", "B": "BBB", "AB": "AAA"}
+    assert test_lsys.rules == expectation
