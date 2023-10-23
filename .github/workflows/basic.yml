@@ -11,4 +11,4 @@ jobs:
 
     steps:
     - name: tests
-      run: pytest tests
+      run: python3 -m pytest tests
