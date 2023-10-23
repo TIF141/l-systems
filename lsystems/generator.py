@@ -9,10 +9,12 @@ class Generator:
 
     def generate(self):
         predecessors = self.axiom
+        steps = [self.axiom]
         for _ in range(self.nsteps):
             successors = self.lsys.step(predecessors)
             predecessors = successors
-            print(successors)
+            steps.append(successors)
+        print(steps)
 
 
 if __name__ == "__main__":
