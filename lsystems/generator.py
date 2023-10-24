@@ -1,3 +1,6 @@
+from lsystems.tortoise import Tortoise
+
+
 class Generator:
     def __init__(self, lsys, axiom, nsteps):
         self.lsys = lsys
@@ -15,8 +18,6 @@ class Generator:
         return steps
 
     def generate_tortoise(self):
-        from tortoise import Tortoise
-
         predecessors = self.axiom
         steps = [self.axiom]
         tort = Tortoise()
@@ -44,7 +45,8 @@ if __name__ == "__main__":
     # test_generator = Generator(test_lsys, "A", 10)
     # print(test_generator.generate())
     test_lsys = Lsys(["F", "f", "+", "-"], {"F": "F-F+F+FF-F-F+F"})
-    test_gen = Generator(test_lsys, "F-F-F-F", 3)
+    # test_lsys = Lsys(["F", "f", "+", "-"], {"F": "F-F+F"})
+    test_gen = Generator(test_lsys, "F-F-F-F", 1)
     steps, history = test_gen.generate_tortoise()
     print(steps, history)
     draw_coords(history, 200)
