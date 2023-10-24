@@ -1,10 +1,12 @@
-from lsystems.tortoise import Tortoise
+import numpy as np
+from tortoise import Tortoise
 
 
 class Generator:
-    def __init__(self, lsys, axiom, nsteps):
+    def __init__(self, lsys, axiom, branching_angle, nsteps):
         self.lsys = lsys
         self.axiom = axiom
+        self.branching_angle = branching_angle
         self.nsteps = nsteps
         self.stack = []
 
@@ -29,10 +31,17 @@ class Generator:
                 if successor == "F":
                     tort.forward(draw=True)
                 if successor == "-":
-                    tort.rotate(-90)
+                    tort.rotate(-self.branching_angle)
                 if successor == "+":
-                    tort.rotate(90)
-        return steps, tort.get_history()
+                    tort.rotate(self.branching_angle)
+                if successor == "[":
+                    self.stack.append(np.array([*tort.pos, tort.angle_deg]))
+                if successor == "]":
+                    root = self.stack.pop(-1)
+                    tort.pos = root[:2]
+                    tort.angle_deg = root[2]
+                    tort.update_history()
+        return steps, tort.get_history(), self.stack
 
 
 if __name__ == "__main__":
@@ -44,9 +53,13 @@ if __name__ == "__main__":
 
     # test_generator = Generator(test_lsys, "A", 10)
     # print(test_generator.generate())
-    test_lsys = Lsys(["F", "f", "+", "-"], {"F": "F-F+F+FF-F-F+F"})
+    # test_lsys = Lsys(["F", "f", "+", "-"], {"F": "F-F+F+FF-F-F+F"})
     # test_lsys = Lsys(["F", "f", "+", "-"], {"F": "F-F+F"})
-    test_gen = Generator(test_lsys, "F-F-F-F", 1)
-    steps, history = test_gen.generate_tortoise()
-    print(steps, history)
-    draw_coords(history, 200)
+    # test_gen = Generator(test_lsys, "F-F-F-F", 90, 4)
+    test_lsys = Lsys(["F", "f", "+", "-", "[", "]"], {"F": "FF-[-F+F+F]+[+F-F-F]"})
+    test_gen = Generator(test_lsys, "F", 22.5, 4)
+    steps, history, stack = test_gen.generate_tortoise()
+    print(steps)
+    for i in stack:
+        print(i)
+    draw_coords(history, 500)
