@@ -37,17 +37,17 @@ def test_rotate_and_move():
 
 def test_history_empty():
     tortoise = Tortoise()
-    assert_array_equal(tortoise.get_history(), np.array([]))
+    assert_array_equal(tortoise.get_history(), [])
 
 
 def test_history_draw():
     tortoise = Tortoise()
     tortoise.forward(draw=True)
-    assert_allclose(tortoise.get_history(), np.array([[0, 0], [1, 0]]))
+    assert_allclose(tortoise.get_history(), [np.array([[0, 0], [1, 0]])])
 
 
-def test_history_nodraw_then_draw():
+def test_history_nodraw_draw():
     tortoise = Tortoise()
     tortoise.forward(draw=False)
     tortoise.forward(draw=True)
-    assert_allclose(tortoise.get_history(), np.array([[1, 0], [2, 0]]))
+    assert_allclose(tortoise.get_history(), [np.array([[1, 0], [2, 0]])])
