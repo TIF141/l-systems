@@ -33,3 +33,19 @@ def test_min_points():
     width, height, max_points, min_points = get_extent(test_coords)
 
     assert_array_equal(min_points, np.array([0, 0]))
+
+
+def test_max_points_one_chunk():
+    test_coords = [np.array([[0, 0], [10, 0], [1, 1]])]
+
+    width, height, max_points, min_points = get_extent(test_coords)
+
+    assert_array_equal(max_points, np.array([10, 1]))
+
+
+def test_min_points_one_chunk():
+    test_coords = [np.array([[0, 0], [10, 0], [1, -5]])]
+
+    width, height, max_points, min_points = get_extent(test_coords)
+
+    assert_array_equal(min_points, np.array([0, -5]))

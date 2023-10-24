@@ -13,6 +13,11 @@ def test_initial_angle():
     assert np.isclose(tortoise.get_angle_rad(), float(0))
 
 
+def test_initial_draw():
+    tortoise = Tortoise()
+    assert tortoise.prev_draw is False
+
+
 def test_forward():
     tortoise = Tortoise()
     tortoise.forward()
