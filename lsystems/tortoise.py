@@ -1,6 +1,5 @@
 """Class implementing turtle"""
 import numpy as np
-from lsystems.draw import draw_coords
 
 
 class Tortoise:
@@ -63,5 +62,6 @@ if __name__ == "__main__":
     t.forward()
     h = t.get_history()
     print(h)
+    from lsystems.draw import draw_coords
 
     draw_coords(h, 200)
