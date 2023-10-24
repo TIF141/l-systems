@@ -27,14 +27,15 @@ class Generator:
                 if successor == "F":
                     tort.forward(draw=True)
                 if successor == "-":
-                    tort.rotate(90)
-                if successor == "+":
                     tort.rotate(-90)
+                if successor == "+":
+                    tort.rotate(90)
         return steps, tort.get_history()
 
 
 if __name__ == "__main__":
     from lsys import Lsys
+    from draw import draw_coords
 
     # test_lsys = Lsys(["A", "B"], {"A": "AB"})
     # test_lsys.add_rules({"B": "AA"})
@@ -42,5 +43,7 @@ if __name__ == "__main__":
     # test_generator = Generator(test_lsys, "A", 10)
     # print(test_generator.generate())
     test_lsys = Lsys(["F", "f", "+", "-"], {"F": "F-F+F+FF-F-F+F"})
-    test_gen = Generator(test_lsys, "F-F-F-F", 1)
-    print(test_gen.generate_tortoise())
+    test_gen = Generator(test_lsys, "F-F-F-F", 3)
+    steps, history = test_gen.generate_tortoise()
+    print(steps, history)
+    draw_coords(history, 200)

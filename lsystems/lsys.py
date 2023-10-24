@@ -12,6 +12,8 @@ class Lsys:
         for predecessor in predecessors:
             if predecessor in self.rules:
                 successors += self.rules[predecessor]
+            else:
+                successors += predecessor
         return successors
 
 
