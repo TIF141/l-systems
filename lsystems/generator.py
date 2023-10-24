@@ -3,6 +3,7 @@ class Generator:
         self.lsys = lsys
         self.axiom = axiom
         self.nsteps = nsteps
+        self.stack = []
 
     def generate(self):
         predecessors = self.axiom
