@@ -17,7 +17,7 @@ class Lsys:
         return successors
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     test_lsys = Lsys(["A", "B"], {"A": "AB"})
     print(test_lsys.rules)
     test_lsys.add_rules({"B": "AA"})

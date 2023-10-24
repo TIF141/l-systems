@@ -41,7 +41,7 @@ class Tortoise:
         return self.history
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     t = Tortoise()
     t.forward()
     t.rotate(45)
