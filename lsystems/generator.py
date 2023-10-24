@@ -57,9 +57,10 @@ if __name__ == "__main__":
     # test_lsys = Lsys(["F", "f", "+", "-"], {"F": "F-F+F"})
     # test_gen = Generator(test_lsys, "F-F-F-F", 90, 4)
     test_lsys = Lsys(["F", "f", "+", "-", "[", "]"], {"F": "FF-[-F+F+F]+[+F-F-F]"})
-    test_gen = Generator(test_lsys, "F", 22.5, 4)
+    test_gen = Generator(test_lsys, "F", 22.5, 1)
     steps, history, stack = test_gen.generate_tortoise()
-    print(steps)
+    # print(steps)
     for i in stack:
         print(i)
+    print(history)
     draw_coords(history, 500)
