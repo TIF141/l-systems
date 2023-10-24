@@ -1,6 +1,6 @@
 from lsystems.lsys import Lsys
 
-alphabet = ["a", "b"]
+alphabet = ["A", "B"]
 rules = {"A": "ABA", "B": "BBB"}
 test_lsys = Lsys(alphabet, rules)
 
@@ -21,6 +21,6 @@ def testaddrules():
 
 def teststep():
     predecessor = "A"
-    successor = test_lsys.step(predecessor, 1)
+    successor = test_lsys.step(predecessor)
     expectation = "ABA"
-    assert successor == "ABA"
+    assert successor == expectation

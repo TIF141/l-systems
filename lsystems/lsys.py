@@ -7,15 +7,14 @@ class Lsys:
         for predecessor, successor in newrules.items():
             self.rules[predecessor] = successor
 
-    def step(self, predecessors, nsteps):
-        for _ in range(nsteps):
-            successors = ""
-            for predecessor in predecessors:
-                if predecessor in self.rules:
-                    successors += self.rules[predecessor]
-            predecessors = successors
-            print(predecessors)
-        return predecessors
+    def step(self, predecessors):
+        successors = ""
+        for predecessor in predecessors:
+            if predecessor in self.rules:
+                successors += self.rules[predecessor]
+            else:
+                successors += predecessor
+        return successors
 
 
 if __name__ == "__main__":  # pragma: no cover
