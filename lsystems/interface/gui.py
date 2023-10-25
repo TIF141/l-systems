@@ -154,7 +154,6 @@ class Window(QWidget):
             angle = self.angle.value()
             lsys = Lsys(self.data.alphabet, rules)
             if int(self.iterations.value()) != 0:
-                print("generating")
                 g = Generator(lsys, axiom, angle, self.iterations.value())
                 steps, history, stack = g.generate_tortoise()
                 from lsystems.draw import draw_coords
@@ -168,7 +167,10 @@ class Window(QWidget):
 
         except AttributeError:
             error_dialog = QErrorMessage()
-            error_dialog.showMessage("Please select a rule and an axiom")
+            error_dialog.showMessage(
+                """Please input rule(s) and axiom(s), 
+                and make sure an axiom is selected."""
+            )
             error_dialog.exec()
 
     def showOnLabel(self):
