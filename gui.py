@@ -105,8 +105,8 @@ class Window(QWidget):
         lsys = Lsys(self.data.alphabet, self.data.rules)
         if int(self.iterations.value()) != 0:
             print("generating")
-            g = Generator(lsys, "F-F-F-F", self.iterations.value())
-            steps, history = g.generate_tortoise()
+            g = Generator(lsys, "F-F-F-F", 90, self.iterations.value())
+            steps, history, stack = g.generate_tortoise()
             from lsystems.draw import draw_coords
 
             im = draw_coords(history, 200).copy()
