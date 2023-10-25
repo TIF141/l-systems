@@ -33,7 +33,7 @@ def get_extent(coords: List[np.ndarray]):
 
 
 def draw_coords(coords, res: int, scale=True):
-    grid = np.zeros((res, res))
+    grid = np.zeros((res, res), dtype=np.uint8)
     width, height, max_points, min_points = get_extent(coords)
     limiting_fac = max(width, height)
     scale_factor = (res - 1) / limiting_fac
@@ -50,7 +50,6 @@ def draw_coords(coords, res: int, scale=True):
             )
             grid[rr, cc] = val * 255
 
-    im = Image.fromarray(grid)
-    im = im.convert("L")
-    # im = im.save("image.jpg")
-    return im
+    # im = Image.fromarray(grid)
+    # im = im.convert("L")
+    return grid
