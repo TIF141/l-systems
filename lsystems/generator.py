@@ -1,5 +1,5 @@
 import numpy as np
-from lsystems.tortoise import Tortoise
+from tortoise import Tortoise
 
 
 class Generator:
@@ -43,24 +43,54 @@ class Generator:
                     tort.prev_draw = False
         return steps, tort.get_history(), self.stack
 
+    def generate_tortoise_contextdep(self):
+        predecessors = self.axiom
+        steps = [self.axiom]
+        tort = Tortoise()
+        for _ in range(self.nsteps):
+            print("#### Next step")
+            successors = self.lsys.step_contextdep(predecessors)
+            predecessors = successors
+            steps.append(successors)
+            for successor in successors:
+                if successor == "F":
+                    tort.forward(draw=True)
+                if successor == "-":
+                    tort.rotate(-self.branching_angle)
+                if successor == "+":
+                    tort.rotate(self.branching_angle)
+                if successor == "[":
+                    self.stack.append(np.array([*tort.pos, tort.angle_deg]))
+                if successor == "]":
+                    root = self.stack.pop(-1)
+                    tort.pos = root[:2]
+                    tort.angle_deg = root[2]
+                    tort.prev_draw = False
+        return steps, tort.get_history(), self.stack
+
 
 if __name__ == "__main__":
     from lsys import Lsys
     from draw import draw_coords
 
-    # test_lsys = Lsys(["A", "B"], {"A": "AB"})
-    # test_lsys.add_rules({"B": "AA"})
-
-    # test_generator = Generator(test_lsys, "A", 10)
-    # print(test_generator.generate())
-    # test_lsys = Lsys(["F", "f", "+", "-"], {"F": "F-F+F+FF-F-F+F"})
-    # test_lsys = Lsys(["F", "f", "+", "-"], {"F": "F-F+F"})
-    # test_gen = Generator(test_lsys, "F-F-F-F", 90, 4)
-    test_lsys = Lsys(["F", "f", "+", "-", "[", "]"], {"F": "FF-[-F+F+F]+[+F-F-F]"})
-    test_gen = Generator(test_lsys, "F", 22.5, 4)
-    steps, history, stack = test_gen.generate_tortoise()
-    # print(steps)
-    for i in stack:
-        print(i)
-    print(history)
+    # test_lsys = Lsys(["F", "f", "+", "-", "[", "]"], {"F": "FF-[-F+F+F]+[+F-F-F]"})
+    test_lsys = Lsys(
+        ["F1", "F0", "+", "-", "[", "]"],
+        {
+            "0<0>0": "0",
+            "0<0>1": "1[-F1F1]",
+            "0<1>0": "1",
+            "0<1>1": "1",
+            "1<0>0": "0",
+            "1<0>1": "1F1",
+            "1<1>0": "1",
+            "1<1>1": "0",
+            "*<+>*": "-",
+            "*<->*": "+",
+        },
+        "+-F",
+    )
+    test_gen = Generator(test_lsys, "F1F1F1", 22.5, 1)
+    steps, history, stack = test_gen.generate_tortoise_contextdep()
+    print(steps)
     draw_coords(history, 500)
