@@ -40,7 +40,7 @@ class Generator:
                     root = self.stack.pop(-1)
                     tort.pos = root[:2]
                     tort.angle_deg = root[2]
-                    tort.update_history()
+                    tort.prev_draw = False
         return steps, tort.get_history(), self.stack
 
 
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     # test_lsys = Lsys(["F", "f", "+", "-"], {"F": "F-F+F"})
     # test_gen = Generator(test_lsys, "F-F-F-F", 90, 4)
     test_lsys = Lsys(["F", "f", "+", "-", "[", "]"], {"F": "FF-[-F+F+F]+[+F-F-F]"})
-    test_gen = Generator(test_lsys, "F", 22.5, 1)
+    test_gen = Generator(test_lsys, "F", 22.5, 4)
     steps, history, stack = test_gen.generate_tortoise()
     # print(steps)
     for i in stack:
