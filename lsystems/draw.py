@@ -1,7 +1,6 @@
 import numpy as np
 from typing import List
 from skimage.draw import line_aa
-from PIL import Image
 
 
 def get_extent(coords: List[np.ndarray]):
