@@ -15,7 +15,6 @@ from PyQt6.QtWidgets import (
 )
 from lsystems.interface.input_dialogs import RuleInputDialog, AxiomInputDialog
 
-# from PyQt6
 from lsystems.generator import Generator
 from lsystems.lsys import Lsys
 
@@ -26,22 +25,15 @@ class Window(QWidget):
         self.initWindow()
 
     def initWindow(self):
-        # super().__init__()
         self.setWindowTitle("window title")
         self.setGeometry(200, 500, 400, 300)
-
-        # self.addRuleButton = QPushButton()
-        # self.addRuleButton.setText("Add rule")
-        # self.addRuleButton.clicked.connect(self.get_new_rule)
 
         self.rulesButtons = QButtonGroup()
         self.addRuleButton = QPushButton()
         self.removeRuleButton = QPushButton()
         self.addRuleButton.setText("Add rule")
         self.removeRuleButton.setText("Remove rule")
-        # self.rulesButtonsLayout.addWidget(addRuleButton)
         self.rulesButtons.addButton(self.addRuleButton)
-        # self.rulesButtonsLayout.addWidget(removeRuleButton)
         self.rulesButtons.addButton(self.removeRuleButton)
         self.addRuleButton.clicked.connect(self.get_new_rule)
         self.removeRuleButton.clicked.connect(self.remove_rule)
@@ -51,7 +43,6 @@ class Window(QWidget):
 
         self.rulesList = QListWidget(self)
         self.rulesList.addItems([])
-        # self.rulesList.currentItemChanged.connect(self.generate)
 
         self.iterationsTitle = QLabel(self)
         self.iterationsTitle.setText("Iterations")
@@ -64,8 +55,6 @@ class Window(QWidget):
 
         self.angle = QDoubleSpinBox(self)
         self.angle.setValue(90.0)
-        # self.angle.setDef
-        # self.iterations.valueChanged.connect(self.generate)
 
         self.axiomListTitle = QLabel(self)
         self.axiomListTitle.setText("Axioms")
@@ -75,9 +64,7 @@ class Window(QWidget):
         self.removeAxiomButton = QPushButton()
         self.addAxiomButton.setText("Add axiom")
         self.removeAxiomButton.setText("Remove axiom")
-        # self.rulesButtonsLayout.addWidget(addRuleButton)
         self.axiomsButtons.addButton(self.addAxiomButton)
-        # self.rulesButtonsLayout.addWidget(removeRuleButton)
         self.axiomsButtons.addButton(self.removeAxiomButton)
         self.addAxiomButton.clicked.connect(self.get_new_axiom)
         self.removeAxiomButton.clicked.connect(self.remove_axiom)
@@ -88,22 +75,10 @@ class Window(QWidget):
         self.generateButton = QPushButton(self)
         self.generateButton.setText("Generate")
         self.generateButton.clicked.connect(self.generate)
-        # self.rulesList.current
-
-        # self.addLSysButton = QPushButton()
-
-        # self.generateButton = QPushButton()
 
         self.label = QLabel(self)
 
         self.label.setText("")
-        # self.addLSysButton.setText("button")
-        # self.addLSysButton.clicked.connect(self.get_input)
-        # self.generateButton.setText("generate")
-        # self.generateButton.clicked.connect(self.generate)
-
-        # self.show_button = QPushButton("Show")
-        # self.show_button.clicked.connect(self.showOnLabel)
 
         self.createGridLayout()
         self.show()
@@ -213,19 +188,6 @@ class Data:
 
     def add_axiom(self, axiom):
         self.axioms.append(axiom)
-
-    # def add_rule(self):
-    #     key = self.keyEntry.text
-    #     val = self.valueEntry.text
-    #     # iterations = self.iterationsEntry.value
-    #     self.data.add_rule(key, val)
-    #     self.close()
-
-    # def add_rule(self):
-    #     axiom = self.axiomEntry.text()
-    #     # iterations = self.iterationsEntry.value
-    #     self.data.add_axiom(axiom)
-    #     self.close()
 
 
 if __name__ == "__main__":
