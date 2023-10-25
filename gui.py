@@ -45,7 +45,8 @@ class Window(QWidget):
         # QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         self.show_button = QPushButton("Show")
-        self.show_button.clicked.connect(self.openSecondDialog)
+        # self.show_button.clicked.connect(self.openSecondDialog)
+        self.show_button.clicked.connect(self.showOnLabel)
 
         # vbox = QVBoxLayout(self)
         # vbox.addWidget(self.addLSysButton)
@@ -59,13 +60,15 @@ class Window(QWidget):
     def createGridLayout(self):
         # self.horizontalGroupBox = QGroupBox("Grid")
         layout = QGridLayout()
-        layout.setColumnStretch(1, 4)
-        layout.setColumnStretch(2, 4)
+        # layout.setColumnStretch(1, 4)
+        # layout.setColumnStretch(2, 4)
 
-        layout.addWidget(self.addLSysButton, 0, 0)
-        layout.addWidget(self.generateButton, 0, 1)
-        layout.addWidget(self.show_button, 0, 2)
-        layout.addWidget(self.label, 1, 1)
+        layout.addWidget(self.label, 0, 0, 3, 1)
+        layout.addWidget(self.addLSysButton, 0, 1)
+        layout.addWidget(self.generateButton, 1, 1)
+        layout.addWidget(self.show_button, 2, 1)
+
+        layout.setColumnStretch(0, 4)
 
         self.setLayout(layout)
 
@@ -111,6 +114,10 @@ class Window(QWidget):
         # ex = Example()
         # app.exec()
 
+    def showOnLabel(self):
+        pixmap = QPixmap("image.jpg")
+        self.label.setPixmap(pixmap)
+
 
 class Data:
     def __init__(self):
@@ -126,11 +133,9 @@ class Dialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        # self.load_image_btn = QPushButton("Check image")
-        # self.load_image_btn.clicked.connect(self.load_image)
         self.image_lbl = QLabel()
         lay = QVBoxLayout(self)
-        # lay.addWidget(self.load_image_btn)
+
         lay.addWidget(self.image_lbl)
         self.load_image()
 
@@ -141,31 +146,8 @@ class Dialog(QDialog):
             self.image_lbl.setPixmap(QPixmap(pixmap))
 
 
-# class Example(QWidget):
-#     def __init__(self):
-#         super().__init__()
-
-#         self.im = QPixmap("./image.jpg")
-#         self.label = QLabel()
-#         self.label.setPixmap(self.im)
-
-#         width, height = self.im.width(), self.im.height()
-
-#         self.grid = QGridLayout()
-#         self.grid.addWidget(self.label, 1, 1)
-#         self.setLayout(self.grid)
-
-#         self.setGeometry(0, 0, width, height)
-#         self.setWindowTitle("PyQT show image")
-#         self.show()
-
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    # MainWindow = QMainWindow()
-    # ui = Window()
-    # ui.setupUi(MainWindow)
-    # MainWindow.show()
     window = Window()
     window.show()
 
