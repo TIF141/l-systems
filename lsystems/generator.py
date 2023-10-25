@@ -14,7 +14,7 @@ class Generator:
         return steps
 
     def generate_tortoise(self):
-        from tortoise import Tortoise
+        from lsystems.tortoise import Tortoise
 
         predecessors = self.axiom
         steps = [self.axiom]
