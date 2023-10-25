@@ -1,5 +1,5 @@
 import numpy as np
-from tortoise import Tortoise
+from lsystems.tortoise import Tortoise
 
 
 class Generator:

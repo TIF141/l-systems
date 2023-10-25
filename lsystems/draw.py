@@ -52,5 +52,5 @@ def draw_coords(coords, res: int, scale=True):
 
     im = Image.fromarray(grid)
     im = im.convert("L")
-    im = im.save("image.jpg")
+    # im = im.save("image.jpg")
     return im
