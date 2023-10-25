@@ -164,13 +164,11 @@ class Window(QWidget):
 
     def generate(self):
         try:
+            rules = self.data.rules
             assert self.data.rules is not {}
-            rule_str = self.rulesList.currentItem().text()
-            rule_dict = self.rule_str_to_dict(rule_str)
             axiom = self.axiomList.currentItem().text()
             angle = self.angle.value()
-            print(rule_str)
-            lsys = Lsys(self.data.alphabet, rule_dict)
+            lsys = Lsys(self.data.alphabet, rules)
             if int(self.iterations.value()) != 0:
                 print("generating")
                 g = Generator(lsys, axiom, angle, self.iterations.value())
