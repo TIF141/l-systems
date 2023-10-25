@@ -1,4 +1,6 @@
 class Generator:
+    from lsystems.tortoise import Tortoise
+
     def __init__(self, lsys, axiom, nsteps):
         self.lsys = lsys
         self.axiom = axiom
@@ -15,8 +17,6 @@ class Generator:
         return steps
 
     def generate_tortoise(self):
-        from tortoise import Tortoise
-
         predecessors = self.axiom
         steps = [self.axiom]
         tort = Tortoise()
