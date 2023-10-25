@@ -90,7 +90,7 @@ if __name__ == "__main__":
         },
         "+-F",
     )
-    test_gen = Generator(test_lsys, "F1F1F1", 22.5, 4)
+    test_gen = Generator(test_lsys, "F1F1F1", 22.5, 10)
     steps, history, stack = test_gen.generate_tortoise_contextdep()
     print(steps)
     draw_coords(history, 500)

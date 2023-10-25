@@ -26,9 +26,17 @@ class Lsys:
             print("Next predecessor")
             if strict_predecessor not in self.ignore:
                 left = [i for i in predecessors[:i] if i not in self.ignore]
-                left_context = left[-1] if len(left) > 0 else "NaN"
+                if len(left) > 0 and left[-1] == "]":
+                    left_context = left[len(left) - left[::-1].index("[") - 2]
+                else:
+                    left_context = left[-1] if len(left) > 0 else "NaN"
+
                 right = [i for i in predecessors[i + 1 :] if i not in self.ignore]
-                right_context = right[0] if len(right) > 0 else "NaN"
+                if len(right) > 0 and right[0] == "[":
+                    right_context = right[right.index("]") + 1]
+                else:
+                    right_context = right[0] if len(right) > 0 else "NaN"
+
                 predecessor_context = (
                     left_context + "<" + strict_predecessor + ">" + right_context
                 )
