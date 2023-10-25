@@ -10,13 +10,10 @@ from PyQt6.QtWidgets import (
     QSpinBox,
     QDoubleSpinBox,
     QGridLayout,
-    QDialog,
-    QLineEdit,
-    QVBoxLayout,
-    QDialogButtonBox,
     QApplication,
     QErrorMessage,
 )
+from lsystems.interface.input_dialogs import RuleInputDialog, AxiomInputDialog
 
 # from PyQt6
 from lsystems.generator import Generator
@@ -167,7 +164,7 @@ class Window(QWidget):
 
     def update_label(self):
         items = self.data.rules.items()
-        s = "\n".join(str(r) + " -> " + str(k) for r, k in items())
+        s = "\n".join(str(r) + " -> " + str(k) for r, k in items)
         self.label.setText("Rules:\n" + s)
 
     def rule_str_to_dict(self, rule_str):
@@ -217,81 +214,12 @@ class Data:
     def add_axiom(self, axiom):
         self.axioms.append(axiom)
 
-
-class RuleInputDialog(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-        self.data = parent.data
-        self.createItems()
-        self.generateLayout()
-
-    def createItems(self):
-        self.keyEntry = QLineEdit()
-        self.keyEntry.setPlaceholderText("Enter rule key")
-
-        self.valueEntry = QLineEdit()
-        self.valueEntry.setPlaceholderText("Enter rule value")
-
-        # self.iterationsEntry = QSpinBox()
-        # self.iterationsEntry.setMinimum(0)
-
-        self.buttons = QDialogButtonBox(self)
-        self.buttons.setStandardButtons(
-            QDialogButtonBox.StandardButton.Cancel | QDialogButtonBox.StandardButton.Ok
-        )
-        self.buttons.accepted.connect(self.accept)
-        self.buttons.rejected.connect(self.reject)
-
-        # self.okButton = QPushButton()
-        # self.okButton.setText("Create rule")
-        # self.okButton.clicked.connect(self.add_rule)
-
-    def generateLayout(self):
-        self.lay = QVBoxLayout()
-        self.lay.addWidget(self.keyEntry)
-        self.lay.addWidget(self.valueEntry)
-        # self.layout.addWidget(self.iterationsEntry)
-        self.lay.addWidget(self.buttons)
-        self.setLayout(self.lay)
-
     # def add_rule(self):
     #     key = self.keyEntry.text
     #     val = self.valueEntry.text
     #     # iterations = self.iterationsEntry.value
     #     self.data.add_rule(key, val)
     #     self.close()
-
-
-class AxiomInputDialog(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-        self.data = parent.data
-        self.createItems()
-        self.generateLayout()
-
-    def createItems(self):
-        self.axiomEntry = QLineEdit()
-        self.axiomEntry.setPlaceholderText("Enter axiom")
-
-        self.buttons = QDialogButtonBox(self)
-        self.buttons.setStandardButtons(
-            QDialogButtonBox.StandardButton.Cancel | QDialogButtonBox.StandardButton.Ok
-        )
-        self.buttons.accepted.connect(self.accept)
-        self.buttons.rejected.connect(self.reject)
-
-        # self.okButton = QPushButton()
-        # self.okButton.setText("Create rule")
-        # self.okButton.clicked.connect(self.add_rule)
-
-    def generateLayout(self):
-        self.lay = QVBoxLayout()
-        self.lay.addWidget(self.axiomEntry)
-        # self.layout.addWidget(self.iterationsEntry)
-        self.lay.addWidget(self.buttons)
-        self.setLayout(self.lay)
 
     # def add_rule(self):
     #     axiom = self.axiomEntry.text()
