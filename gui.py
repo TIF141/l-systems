@@ -1,9 +1,22 @@
 import sys
-from PyQt6 import QtCore
 from PyQt6.QtGui import QPixmap, QImage
 
-from PyQt6.QtWidgets import *
-from dataclasses import dataclass
+from PyQt6.QtWidgets import (
+    QButtonGroup,
+    QPushButton,
+    QListWidget,
+    QWidget,
+    QLabel,
+    QSpinBox,
+    QDoubleSpinBox,
+    QGridLayout,
+    QDialog,
+    QLineEdit,
+    QVBoxLayout,
+    QDialogButtonBox,
+    QApplication,
+    QErrorMessage,
+)
 
 # from PyQt6
 from lsystems.generator import Generator
@@ -125,10 +138,6 @@ class Window(QWidget):
 
         self.setLayout(layout)
 
-    def openSecondDialog(self):
-        dialog = Dialog(self)
-        dialog.show()
-
     def get_new_rule(self):
         rule_entry = RuleInputDialog(self)
         result = rule_entry.exec()
@@ -149,13 +158,16 @@ class Window(QWidget):
             self.axiomList.addItem(axiom)
 
     def remove_rule(self):
-        self.rulesList.takeItem(int(self.rulesList.row(self.rulesList.currentItem())))
+        current_item = self.rulesList.currentItem()
+        self.rulesList.takeItem(int(self.rulesList.row(current_item)))
 
     def remove_axiom(self):
-        self.axiomList.takeItem(int(self.axiomList.row(self.axiomList.currentItem())))
+        current_item = self.axiomList.currentItem()
+        self.axiomList.takeItem(int(self.axiomList.row(current_item)))
 
     def update_label(self):
-        s = "\n".join(str(r) + " -> " + str(k) for r, k in self.data.rules.items())
+        items = self.data.rules.items()
+        s = "\n".join(str(r) + " -> " + str(k) for r, k in items())
         self.label.setText("Rules:\n" + s)
 
     def rule_str_to_dict(self, rule_str):
@@ -177,9 +189,8 @@ class Window(QWidget):
 
                 im = draw_coords(history, 200).copy()
                 # self.data.img = im
-                qimage = QImage(
-                    im, im.shape[0], im.shape[1], QImage.Format.Format_Grayscale8
-                )
+                fmt = QImage.Format.Format_Grayscale8
+                qimage = QImage(im, im.shape[0], im.shape[1], fmt)
                 pixmap = QPixmap(qimage)
                 self.label.setPixmap(pixmap)
 
@@ -237,12 +248,12 @@ class RuleInputDialog(QDialog):
         # self.okButton.clicked.connect(self.add_rule)
 
     def generateLayout(self):
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(self.keyEntry)
-        self.layout.addWidget(self.valueEntry)
+        self.lay = QVBoxLayout()
+        self.lay.addWidget(self.keyEntry)
+        self.lay.addWidget(self.valueEntry)
         # self.layout.addWidget(self.iterationsEntry)
-        self.layout.addWidget(self.buttons)
-        self.setLayout(self.layout)
+        self.lay.addWidget(self.buttons)
+        self.setLayout(self.lay)
 
     # def add_rule(self):
     #     key = self.keyEntry.text
@@ -276,35 +287,17 @@ class AxiomInputDialog(QDialog):
         # self.okButton.clicked.connect(self.add_rule)
 
     def generateLayout(self):
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(self.axiomEntry)
+        self.lay = QVBoxLayout()
+        self.lay.addWidget(self.axiomEntry)
         # self.layout.addWidget(self.iterationsEntry)
-        self.layout.addWidget(self.buttons)
-        self.setLayout(self.layout)
+        self.lay.addWidget(self.buttons)
+        self.setLayout(self.lay)
 
     # def add_rule(self):
     #     axiom = self.axiomEntry.text()
     #     # iterations = self.iterationsEntry.value
     #     self.data.add_axiom(axiom)
     #     self.close()
-
-
-class Dialog(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.data = parent.data
-
-        self.image_lbl = QLabel()
-        lay = QVBoxLayout(self)
-
-        lay.addWidget(self.image_lbl)
-        self.load_image()
-
-    def load_image(self):
-        image = self.data.img
-        if image_path:
-            pixmap = QPixmap(image)
-            self.image_lbl.setPixmap(QPixmap(pixmap))
 
 
 if __name__ == "__main__":
