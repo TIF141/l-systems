@@ -20,6 +20,8 @@ class Generator:
         return steps
 
     def generate_tortoise(self):
+        from lsystems.tortoise import Tortoise
+
         predecessors = self.axiom
         steps = [self.axiom]
         tort = Tortoise()
