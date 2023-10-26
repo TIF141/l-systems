@@ -36,12 +36,16 @@ class Window(QWidget):
 
         self.rulesButtons = QButtonGroup()
         self.addRuleButton = QPushButton()
+        self.editRuleButton = QPushButton()
         self.removeRuleButton = QPushButton()
         self.addRuleButton.setText("Add ruleset")
+        self.editRuleButton.setText("Edit ruleset")
         self.removeRuleButton.setText("Remove ruleset")
         self.rulesButtons.addButton(self.addRuleButton)
+        self.rulesButtons.addButton(self.editRuleButton)
         self.rulesButtons.addButton(self.removeRuleButton)
         self.addRuleButton.clicked.connect(self.get_new_rule)
+        self.editRuleButton.clicked.connect(self.edit_rule)
         self.removeRuleButton.clicked.connect(self.remove_rule)
 
         self.rulesListTitle = QLabel(self)
@@ -96,18 +100,19 @@ class Window(QWidget):
 
         layout.addWidget(self.label, 0, 0, 8, 1)
         layout.addWidget(self.rulesListTitle, 0, 1, 1, 1)
-        layout.addWidget(self.rulesList, 1, 1, 1, 2)
+        layout.addWidget(self.rulesList, 1, 1, 1, 3)
         layout.addWidget(self.addRuleButton, 2, 1, 1, 1)
-        layout.addWidget(self.removeRuleButton, 2, 2, 1, 1)
-        layout.addWidget(self.iterationsTitle, 3, 1, 1, 2)
-        layout.addWidget(self.iterations, 4, 1, 1, 2)
-        layout.addWidget(self.angleTitle, 5, 1, 1, 2)
-        layout.addWidget(self.angle, 6, 1, 1, 2)
-        layout.addWidget(self.axiomListTitle, 7, 1, 1, 2)
-        layout.addWidget(self.axiomList, 8, 1, 1, 2)
+        layout.addWidget(self.editRuleButton, 2, 2, 1, 1)
+        layout.addWidget(self.removeRuleButton, 2, 3, 1, 1)
+        layout.addWidget(self.iterationsTitle, 3, 1, 1, 3)
+        layout.addWidget(self.iterations, 4, 1, 1, 3)
+        layout.addWidget(self.angleTitle, 5, 1, 1, 3)
+        layout.addWidget(self.angle, 6, 1, 1, 3)
+        layout.addWidget(self.axiomListTitle, 7, 1, 1, 3)
+        layout.addWidget(self.axiomList, 8, 1, 1, 3)
         layout.addWidget(self.addAxiomButton, 9, 1, 1, 1)
         layout.addWidget(self.removeAxiomButton, 9, 2, 1, 1)
-        layout.addWidget(self.generateButton, 10, 1, 1, 2)
+        layout.addWidget(self.generateButton, 10, 1, 1, 3)
         # layout.addWidget(self.addLSysButton, 0, 1)
         # layout.addWidget(self.generateButton, 1, 1)
         # layout.addWidget(self.show_button, 2, 1)
@@ -118,7 +123,7 @@ class Window(QWidget):
 
     def get_new_rule(self):
         # rule_entry = RuleInputDialog(self)
-        ruleset_entry = AddRuleSetDialog(self)
+        ruleset_entry = AddRuleSetDialog(self, editing=False)
         result = ruleset_entry.exec()
         if result:
             rulesetName = ruleset_entry.ruleNameBox.text()
@@ -127,6 +132,17 @@ class Window(QWidget):
 
             # rule_str = key + " -> " + value
             self.rulesList.addItem(rulesetName)
+
+    def edit_rule(self):
+        ruleset_entry = AddRuleSetDialog(self, editing=True)
+        result = ruleset_entry.exec()
+        if result:
+            rulesetName = ruleset_entry.ruleNameBox.text()
+            rulesDict = ruleset_entry.rulesDict
+            old_name = self.rulesList.currentItem().text()
+            del self.data.rules[old_name]
+            self.data.add_ruleset(rulesetName, rulesDict)
+            self.rulesList.currentItem().setText(rulesetName)
 
     def get_new_axiom(self):
         axiom_entry = AxiomInputDialog(self)
