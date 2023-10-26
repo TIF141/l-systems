@@ -1,4 +1,3 @@
-import sys
 from PyQt6.QtGui import QPixmap, QImage
 
 from PyQt6.QtWidgets import (
@@ -10,7 +9,6 @@ from PyQt6.QtWidgets import (
     QSpinBox,
     QDoubleSpinBox,
     QGridLayout,
-    QApplication,
     QErrorMessage,
 )
 from lsystems.interface.input_dialogs import (
