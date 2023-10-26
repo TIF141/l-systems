@@ -1,4 +1,5 @@
 import numpy as np
+import os
 from numpy.testing import assert_array_equal
 from lsystems.draw import get_extent, draw_coords
 from lsystems.tortoise import Tortoise
@@ -74,9 +75,10 @@ def test_image_generated(tmp_path):
     t.forward()
     h = t.get_history()
 
-    im = draw_coords(h, 200)
+    grid = draw_coords(h, 200)
 
-    path = tmp_path / "image.jpg"
+    path = os.path.join(tmp_path, "image.jpg")
+    im = Image.fromarray(grid)
     im.save(path)
 
     correct_im = Image.open("tests/test_tortoise_draw.jpg")
