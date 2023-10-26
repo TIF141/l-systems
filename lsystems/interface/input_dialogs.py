@@ -60,6 +60,18 @@ class RuleInputDialog(QDialog):
         self.lay.addWidget(self.buttons)
         self.setLayout(self.lay)
 
+    def accept(self):
+        validInput = self.checkInput()
+        if validInput:
+            self.done(1)
+
+    def checkInput(self):
+        if self.keyEntry.text() == "":
+            return False
+        if self.valueEntry.text() == "":
+            return False
+        return True
+
 
 class AxiomInputDialog(QDialog):
     def __init__(self, parent=None):
@@ -91,6 +103,16 @@ class AxiomInputDialog(QDialog):
         # self.layout.addWidget(self.iterationsEntry)
         self.lay.addWidget(self.buttons)
         self.setLayout(self.lay)
+
+    def accept(self):
+        validInput = self.checkInput()
+        if validInput:
+            self.done(1)
+
+    def checkInput(self):
+        if self.axiomEntry.text() == "":
+            return False
+        return True
 
 
 class AddRuleSetDialog(QDialog):
@@ -171,6 +193,8 @@ class AddRuleSetDialog(QDialog):
         if self.ruleNameBox.text() in self.data.rules.keys():
             if not self.editing:
                 return False
+        if self.rulesList.count() == 0:
+            return False
         return True
 
     def add_rule(self):
