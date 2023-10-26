@@ -1,7 +1,5 @@
 import sys
-import re
 from PyQt6.QtGui import QPixmap, QImage
-from PyQt6.QtGui import QRegularExpressionValidator as QRegExValidator
 
 from PyQt6.QtWidgets import (
     QButtonGroup,
@@ -16,7 +14,6 @@ from PyQt6.QtWidgets import (
     QErrorMessage,
 )
 from lsystems.interface.input_dialogs import (
-    RuleInputDialog,
     AxiomInputDialog,
     AddRuleSetDialog,
 )
