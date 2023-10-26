@@ -40,6 +40,12 @@ class Tortoise:
     def get_history(self):
         return self.history
 
+    def reset_state(self):
+        self.history = []
+        self.angle = 0
+        self.prev_draw = False
+        self.pos = np.array([0, 0])
+
 
 if __name__ == "__main__":  # pragma: no cover
     t = Tortoise()
