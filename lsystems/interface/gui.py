@@ -1,5 +1,7 @@
 import sys
+import re
 from PyQt6.QtGui import QPixmap, QImage
+from PyQt6.QtGui import QRegularExpressionValidator as QRegExValidator
 
 from PyQt6.QtWidgets import (
     QButtonGroup,
@@ -13,7 +15,11 @@ from PyQt6.QtWidgets import (
     QApplication,
     QErrorMessage,
 )
-from lsystems.interface.input_dialogs import RuleInputDialog, AxiomInputDialog
+from lsystems.interface.input_dialogs import (
+    RuleInputDialog,
+    AxiomInputDialog,
+    AddRuleSetDialog,
+)
 
 from lsystems.generator import Generator
 from lsystems.lsys import Lsys
@@ -31,8 +37,8 @@ class Window(QWidget):
         self.rulesButtons = QButtonGroup()
         self.addRuleButton = QPushButton()
         self.removeRuleButton = QPushButton()
-        self.addRuleButton.setText("Add rule")
-        self.removeRuleButton.setText("Remove rule")
+        self.addRuleButton.setText("Add ruleset")
+        self.removeRuleButton.setText("Remove ruleset")
         self.rulesButtons.addButton(self.addRuleButton)
         self.rulesButtons.addButton(self.removeRuleButton)
         self.addRuleButton.clicked.connect(self.get_new_rule)
@@ -111,15 +117,16 @@ class Window(QWidget):
         self.setLayout(layout)
 
     def get_new_rule(self):
-        rule_entry = RuleInputDialog(self)
-        result = rule_entry.exec()
+        # rule_entry = RuleInputDialog(self)
+        ruleset_entry = AddRuleSetDialog(self)
+        result = ruleset_entry.exec()
         if result:
-            key = rule_entry.keyEntry.text()
-            value = rule_entry.valueEntry.text()
-            self.data.add_rule(key, value)
+            rulesetName = ruleset_entry.ruleNameBox.text()
+            rulesDict = ruleset_entry.rulesDict
+            self.data.add_ruleset(rulesetName, rulesDict)
 
-            rule_str = key + " -> " + value
-            self.rulesList.addItem(rule_str)
+            # rule_str = key + " -> " + value
+            self.rulesList.addItem(rulesetName)
 
     def get_new_axiom(self):
         axiom_entry = AxiomInputDialog(self)
@@ -148,8 +155,9 @@ class Window(QWidget):
 
     def generate(self):
         try:
-            rules = self.data.rules
-            assert self.data.rules is not {}
+            current_ruleset = self.rulesList.currentItem().text()
+            rules = self.data.rules[current_ruleset]
+            assert rules
             axiom = self.axiomList.currentItem().text()
             angle = self.angle.value()
             lsys = Lsys(self.data.alphabet, rules)
@@ -168,7 +176,7 @@ class Window(QWidget):
         except AttributeError:
             error_dialog = QErrorMessage()
             error_dialog.showMessage(
-                """Please input rule(s) and axiom(s), 
+                """Please input rule(s) and axiom(s),
                 and make sure an axiom is selected."""
             )
             error_dialog.exec()
@@ -185,11 +193,36 @@ class Data:
 
         self.alphabet = ["F", "f", "+", "-"]
 
-    def add_rule(self, key, value):
-        self.rules[key] = value
+    # def add_rule(self, key, value):
+    #     valid_entry = self.assert_valid_entry(key, value)
+    #     if not valid_entry:
+    #         error_dialog = QErrorMessage()
+    #         error_dialog.showMessage("""Please input valid key and value.""")
+    #         return error_dialog.exec()
+
+    #     else:
+    #         self.rules[key] = value
+    #         return
+
+    def add_ruleset(self, name, rules):
+        for k, v in rules.items():
+            # valid_entry = self.assert_valid_entry(k, v)
+            valid_entry = True
+            if not valid_entry:
+                error_dialog = QErrorMessage()
+                error_dialog.showMessage("""Please input valid rules""")
+                return error_dialog.exec()
+
+            else:
+                self.rules[name] = rules
 
     def add_axiom(self, axiom):
         self.axioms.append(axiom)
+
+    def assert_valid_entry(self, key, value):
+        key_error = any(c not in self.alphabet for c in str(key))
+        value_error = any(c not in self.alphabet for c in str(value))
+        return not key_error and not value_error
 
 
 if __name__ == "__main__":

@@ -3,6 +3,11 @@ from PyQt6.QtWidgets import (
     QLineEdit,
     QDialogButtonBox,
     QVBoxLayout,
+    QLabel,
+    QListWidget,
+    QButtonGroup,
+    QPushButton,
+    QGridLayout,
 )
 
 
@@ -75,3 +80,78 @@ class AxiomInputDialog(QDialog):
         # self.layout.addWidget(self.iterationsEntry)
         self.lay.addWidget(self.buttons)
         self.setLayout(self.lay)
+
+
+class AddRuleSetDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        if parent is not None:
+            self.data = parent.data
+
+        self.createItems()
+        self.generateLayout()
+
+        self.rulesDict = {}
+
+    def createItems(self):
+        # Rule set name
+        self.ruleSetName = QLabel()
+        self.ruleSetName.setText("Ruleset name")
+        # Text
+        self.ruleNameBox = QLineEdit()
+        self.ruleNameBox.setPlaceholderText("Enter ruleset name")
+        # Rules: list
+        self.rulesList = QListWidget()
+        # Buttons: add, edit, remove
+        self.addRemoveButtons = QButtonGroup(self)
+        self.addRuleButton = QPushButton()
+        self.editRuleButton = QPushButton()
+        self.removeRuleButton = QPushButton()
+        self.addRemoveButtons.addButton(self.addRuleButton)
+        self.addRemoveButtons.addButton(self.editRuleButton)
+        self.addRemoveButtons.addButton(self.removeRuleButton)
+        self.addRuleButton.setText("Add rule")
+        self.editRuleButton.setText("Edit rule")
+        self.removeRuleButton.setText("Remove rule")
+        self.addRuleButton.clicked.connect(self.add_rule)
+        # self.editRuleButton.clicked.connect(self.edit_rule)
+        self.removeRuleButton.clicked.connect(self.remove_rule)
+        # self.addRuleButton.clicked.connect(self.add_rule)
+        # self.editRuleButton.clicked.connect(self.edit_rule)
+        # self.removeRuleButton.clicked.connect(self.remove_rule)
+        # Buttons: ok, cancel
+        self.okCancelButtons = QDialogButtonBox(self)
+        cancel = QDialogButtonBox.StandardButton.Cancel
+        ok = QDialogButtonBox.StandardButton.Ok
+        self.okCancelButtons.setStandardButtons(cancel | ok)
+        self.okCancelButtons.accepted.connect(self.accept)
+        self.okCancelButtons.rejected.connect(self.reject)
+        pass
+
+    def generateLayout(self):
+        layout = QGridLayout()
+
+        layout.addWidget(self.ruleSetName, 0, 0, 1, 3)
+        layout.addWidget(self.ruleNameBox, 1, 0, 1, 3)
+        layout.addWidget(self.rulesList, 2, 0, 1, 3)
+        layout.addWidget(self.addRuleButton, 3, 0, 1, 1)
+        layout.addWidget(self.editRuleButton, 3, 1, 1, 1)
+        layout.addWidget(self.removeRuleButton, 3, 2, 1, 1)
+        layout.addWidget(self.okCancelButtons, 4, 0, 1, 3)
+
+        self.setLayout(layout)
+
+    def add_rule(self):
+        rule_entry = RuleInputDialog(self)
+        result = rule_entry.exec()
+        if result:
+            key = rule_entry.keyEntry.text()
+            value = rule_entry.valueEntry.text()
+            rule_str = key + " -> " + value
+            self.rulesList.addItem(rule_str)
+            self.rulesDict[key] = value
+
+    def remove_rule(self):
+        current_item = self.rulesList.currentItem()
+        self.rulesList.takeItem(int(self.rulesList.row(current_item)))
