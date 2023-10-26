@@ -75,34 +75,74 @@ class Lsys:
     #     return successors
 
     def step_contextdep(self, predecessors):
+        # F1F0[F1F1]F0
         successors = ""
-        stack = []
         for i, strict_predecessor in enumerate(predecessors):
-            if strict_predecessor == "[":
-                stack.append(i)
-            print("Next predecessor")
-            if strict_predecessor not in self.ignore:
-                left = [i for i in predecessors[:i] if i not in self.ignore]
-                left_naive = left[-1] if len(left) > 0 else "NaN"
-                if left_naive == "[":
-                    left_context = left[-2]
-                if left_naive == "]":
-                    left_context = left[i - 1]
+            if strict_predecessor not in ("F[]"):  # NEED TO CHANGE THIS
+                print(f"Next predecessor {i}")
 
-                right = [i for i in predecessors[i + 1 :] if i not in self.ignore]
-                right_naive = right[0] if len(right) > 0 else "NaN"
-                # if right_naive == "[":
-                # right_context =
-
-                predecessor_context = (
-                    left_context + "<" + strict_predecessor + ">" + right_context
-                )
-                print(predecessor_context)
-                if predecessor_context in self.rules:
-                    # print(predecessor_context)
-                    successors += self.rules[predecessor_context]
+                if "*<" + strict_predecessor + ">*" in self.rules:
+                    successors += self.rules["*<" + strict_predecessor + ">*"]
                 else:
-                    successors += strict_predecessor
+                    left = [i for i in predecessors[:i] if i not in self.ignore]
+                    leftinv = left[::-1]
+                    left_naive = left[-1] if len(left) > 0 else "NaN"
+                    left_context = left_naive
+                    right = [i for i in predecessors[i + 1 :] if i not in self.ignore]
+                    right_naive = right[0] if len(right) > 0 else "NaN"
+                    right_context = right_naive
+
+                    if left_naive == "]":
+                        # print(left)
+                        # print(leftinv)
+                        count = 0
+                        for j, char in enumerate(leftinv):
+                            if char == "]":
+                                count += 1
+                            if char == "[":
+                                count -= 1
+                            if count == 0 and j > 0:
+                                # print(j, char)
+                                left_context = leftinv[j + 1]
+                                # print(left_context)
+                                break
+
+                    if left_naive == "[":
+                        count = 0
+                        # skip out the first element of leftinv - i.e. the bracket
+                        for j, char in enumerate(leftinv[1:]):
+                            if char == "]":
+                                count += 1
+                            if char == "[":
+                                count -= 1
+                            if count == 0 and char not in ["[", "]"]:
+                                left_context = leftinv[j + 1]
+                                break
+
+                    if right_naive == "[":
+                        count = 0
+                        for j, char in enumerate(right):
+                            if char == "[":
+                                count += 1
+                            if char == "]":
+                                count -= 1
+                            if count == 0 and j > 0:
+                                right_context = right[j + 1]
+                                break
+
+                    if right_naive == "]":
+                        right_context = "NaN"
+
+                    predecessor_context = (
+                        left_context + "<" + strict_predecessor + ">" + right_context
+                    )
+                    print(left_naive, strict_predecessor, right_naive)
+                    print(predecessor_context)
+                    if predecessor_context in self.rules:
+                        # print(predecessor_context)
+                        successors += self.rules[predecessor_context]
+                    else:
+                        successors += strict_predecessor
             else:
                 successors += strict_predecessor
         return successors
@@ -131,8 +171,8 @@ if __name__ == "__main__":  # pragma: no cover
         },
         "+-F",
     )
-    # print("F1F1F1")
-    # print(test_lsys.step_contextdep("F0F0F1"))
+    print("F1F0[F1F1]F0")
+    print(test_lsys.step_contextdep("F1F0[F1[F0F0]F1]F0"))
 
 
 def get_context(str):
@@ -181,6 +221,3 @@ def get_context(str):
             stack.pop(-1)
 
         print(i, right_naive, stack, right, char)
-
-
-get_context("100[11[101]]11")
