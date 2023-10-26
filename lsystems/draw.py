@@ -50,5 +50,5 @@ def draw_coords(coords, res: int, scale=True):
 
     # im = Image.fromarray(grid)
     # im = im.convert("L")
-    grid = np.flip(grid, 0)
+    grid = np.flip(grid, (0, 1))
     return grid

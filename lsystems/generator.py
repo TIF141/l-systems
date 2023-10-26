@@ -25,8 +25,6 @@ class Generator:
         tort = Tortoise()
         for _ in range(self.nsteps):
             # Clear history and angle after every iteration
-            # tort.history = []
-            # tort.angle_deg = 0
             tort.reset_state()
             successors = self.lsys.step(predecessors)
             predecessors = successors

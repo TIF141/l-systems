@@ -42,7 +42,7 @@ class Tortoise:
 
     def reset_state(self):
         self.history = []
-        self.angle = 0
+        self.angle_deg = 0
         self.prev_draw = False
         self.pos = np.array([0, 0])
 
