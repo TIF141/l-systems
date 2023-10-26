@@ -41,15 +41,15 @@ class Window(QWidget):
         self.rulesButtons.addButton(self.addRuleButton)
         self.rulesButtons.addButton(self.editRuleButton)
         self.rulesButtons.addButton(self.removeRuleButton)
-        self.addRuleButton.clicked.connect(self.get_new_rule)
-        self.editRuleButton.clicked.connect(self.edit_rule)
-        self.removeRuleButton.clicked.connect(self.remove_rule)
+        self.addRuleButton.clicked.connect(self.add_ruleset)
+        self.editRuleButton.clicked.connect(self.edit_rule_set)
+        self.removeRuleButton.clicked.connect(self.remove_ruleset)
 
         self.rulesListTitle = QLabel(self)
         self.rulesListTitle.setText("Rules")
 
-        self.rulesList = QListWidget(self)
-        self.rulesList.addItems([])
+        self.rulesetList = QListWidget(self)
+        self.rulesetList.addItems([])
 
         self.iterationsTitle = QLabel(self)
         self.iterationsTitle.setText("Iterations")
@@ -97,7 +97,7 @@ class Window(QWidget):
 
         layout.addWidget(self.label, 0, 0, 8, 1)
         layout.addWidget(self.rulesListTitle, 0, 1, 1, 1)
-        layout.addWidget(self.rulesList, 1, 1, 1, 3)
+        layout.addWidget(self.rulesetList, 1, 1, 1, 3)
         layout.addWidget(self.addRuleButton, 2, 1, 1, 1)
         layout.addWidget(self.editRuleButton, 2, 2, 1, 1)
         layout.addWidget(self.removeRuleButton, 2, 3, 1, 1)
@@ -118,7 +118,7 @@ class Window(QWidget):
 
         self.setLayout(layout)
 
-    def get_new_rule(self):
+    def add_ruleset(self):
         # rule_entry = RuleInputDialog(self)
         ruleset_entry = AddRuleSetDialog(self, editing=False)
         result = ruleset_entry.exec()
@@ -128,18 +128,18 @@ class Window(QWidget):
             self.data.add_ruleset(rulesetName, rulesDict)
 
             # rule_str = key + " -> " + value
-            self.rulesList.addItem(rulesetName)
+            self.rulesetList.addItem(rulesetName)
 
-    def edit_rule(self):
+    def edit_rule_set(self):
         ruleset_entry = AddRuleSetDialog(self, editing=True)
         result = ruleset_entry.exec()
         if result:
             rulesetName = ruleset_entry.ruleNameBox.text()
             rulesDict = ruleset_entry.rulesDict
-            old_name = self.rulesList.currentItem().text()
+            old_name = self.rulesetList.currentItem().text()
             del self.data.rules[old_name]
             self.data.add_ruleset(rulesetName, rulesDict)
-            self.rulesList.currentItem().setText(rulesetName)
+            self.rulesetList.currentItem().setText(rulesetName)
 
     def get_new_axiom(self):
         axiom_entry = AxiomInputDialog(self)
@@ -149,9 +149,9 @@ class Window(QWidget):
             self.data.add_axiom(axiom)
             self.axiomList.addItem(axiom)
 
-    def remove_rule(self):
-        current_item = self.rulesList.currentItem()
-        self.rulesList.takeItem(int(self.rulesList.row(current_item)))
+    def remove_ruleset(self):
+        current_item = self.rulesetList.currentItem()
+        self.rulesetList.takeItem(int(self.rulesetList.row(current_item)))
 
     def remove_axiom(self):
         current_item = self.axiomList.currentItem()
@@ -168,7 +168,7 @@ class Window(QWidget):
 
     def generate(self):
         try:
-            current_ruleset = self.rulesList.currentItem().text()
+            current_ruleset = self.rulesetList.currentItem().text()
             rules = self.data.rules[current_ruleset]
             assert rules
             axiom = self.axiomList.currentItem().text()
