@@ -24,6 +24,9 @@ class Generator:
         steps = [self.axiom]
         tort = Tortoise()
         for _ in range(self.nsteps):
+            # Clear history and angle after every iteration
+            tort.history = []
+            tort.angle_deg = 0
             successors = self.lsys.step(predecessors)
             predecessors = successors
             steps.append(successors)
@@ -59,10 +62,12 @@ if __name__ == "__main__":
     test_alphabet = ["F", "f", "+", "-", "[", "]"]
     test_dict = {"F": "FF-[-F+F+F]+[+F-F-F]"}
     test_lsys = Lsys(test_alphabet, test_dict)
-    test_gen = Generator(test_lsys, "F", 22.5, 4)
+    test_gen = Generator(test_lsys, "F", 22.5, 2)
     steps, history, stack = test_gen.generate_tortoise()
     # print(steps)
     for i in stack:
         print(i)
-    print(history)
+    # print(history)
+    # print(history[-1])
+    print(type(history))
     draw_coords(history, 500)
