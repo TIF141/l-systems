@@ -124,6 +124,9 @@ class Window(QWidget):
         result = ruleset_entry.exec()
         if result:
             rulesetName = ruleset_entry.ruleNameBox.text()
+            if rulesetName == "" or rulesetName in self.data.rules.keys():
+                error = QErrorMessage(self)
+                error.showMessage("Please enter a valid ruleset name")
             rulesDict = ruleset_entry.rulesDict
             self.data.add_ruleset(rulesetName, rulesDict)
 

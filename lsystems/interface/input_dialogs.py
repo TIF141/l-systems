@@ -100,11 +100,13 @@ class AddRuleSetDialog(QDialog):
         if parent is not None:
             self.data = parent.data
 
+        self.editing = editing
+
         self.createItems(editing)
         self.generateLayout()
 
         if editing:
-            current_ruleset = self.parent().rulesList.currentItem().text()
+            current_ruleset = self.parent().rulesetList.currentItem().text()
             self.rulesDict = self.parent().data.rules[current_ruleset]
         else:
             self.rulesDict = {}
@@ -120,7 +122,7 @@ class AddRuleSetDialog(QDialog):
         self.removeRuleButton = QPushButton()
 
         if editing:
-            current_ruleset = self.parent().rulesList.currentItem().text()
+            current_ruleset = self.parent().rulesetList.currentItem().text()
             current_rules = self.parent().data.rules[current_ruleset]
             rules_str = rule_dict_to_str(current_rules)
             self.ruleNameBox.setText(current_ruleset)
@@ -157,6 +159,19 @@ class AddRuleSetDialog(QDialog):
         layout.addWidget(self.okCancelButtons, 4, 0, 1, 3)
 
         self.setLayout(layout)
+
+    def accept(self):
+        validInput = self.checkInput()
+        if validInput:
+            self.done(1)
+
+    def checkInput(self):
+        if self.ruleNameBox.text() == "":
+            return False
+        if self.ruleNameBox.text() in self.data.rules.keys():
+            if not self.editing:
+                return False
+        return True
 
     def add_rule(self):
         rule_entry = RuleInputDialog(self)
