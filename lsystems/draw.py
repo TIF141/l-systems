@@ -25,7 +25,6 @@ def get_extent(coords: List[np.ndarray]):
         # Expand interior list
         max_points = max_points[0]
         min_points = min_points[0]
-
     width, height = max_points - min_points
 
     return width, height, max_points, min_points
