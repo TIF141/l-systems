@@ -1,7 +1,6 @@
 import numpy as np
 from typing import List
 from skimage.draw import line_aa
-from PIL import Image
 
 
 def get_extent(coords: List[np.ndarray]):
@@ -26,7 +25,6 @@ def get_extent(coords: List[np.ndarray]):
         # Expand interior list
         max_points = max_points[0]
         min_points = min_points[0]
-
     width, height = max_points - min_points
 
     return width, height, max_points, min_points
@@ -52,4 +50,5 @@ def draw_coords(coords, res: int, scale=True):
 
     # im = Image.fromarray(grid)
     # im = im.convert("L")
+    grid = np.flip(grid, (0, 1))
     return grid

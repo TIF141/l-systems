@@ -20,12 +20,12 @@ class Generator:
         return steps
 
     def generate_tortoise(self):
-        from lsystems.tortoise import Tortoise
-
         predecessors = self.axiom
         steps = [self.axiom]
         tort = Tortoise()
         for _ in range(self.nsteps):
+            # Clear history and angle after every iteration
+            tort.reset_state()
             successors = self.lsys.step(predecessors)
             predecessors = successors
             steps.append(successors)
