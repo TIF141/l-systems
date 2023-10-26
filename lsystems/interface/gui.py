@@ -110,16 +110,12 @@ class Window(QWidget):
         layout.addWidget(self.addAxiomButton, 9, 1, 1, 1)
         layout.addWidget(self.removeAxiomButton, 9, 2, 1, 1)
         layout.addWidget(self.generateButton, 10, 1, 1, 3)
-        # layout.addWidget(self.addLSysButton, 0, 1)
-        # layout.addWidget(self.generateButton, 1, 1)
-        # layout.addWidget(self.show_button, 2, 1)
 
-        layout.setColumnStretch(0, 5)
+        # layout.setColumnStretch(0, 5)
 
         self.setLayout(layout)
 
     def add_ruleset(self):
-        # rule_entry = RuleInputDialog(self)
         ruleset_entry = AddRuleSetDialog(self, editing=False)
         result = ruleset_entry.exec()
         if result:
@@ -130,7 +126,6 @@ class Window(QWidget):
             rulesDict = ruleset_entry.rulesDict
             self.data.add_ruleset(rulesetName, rulesDict)
 
-            # rule_str = key + " -> " + value
             self.rulesetList.addItem(rulesetName)
 
     def edit_rule_set(self):
@@ -183,7 +178,6 @@ class Window(QWidget):
                 from lsystems.draw import draw_coords
 
                 im = draw_coords(history, 200).copy()
-                # self.data.img = im
                 fmt = QImage.Format.Format_Grayscale8
                 qimage = QImage(im, im.shape[0], im.shape[1], fmt)
                 pixmap = QPixmap(qimage)
@@ -209,17 +203,6 @@ class Data:
 
         self.alphabet = ["F", "f", "+", "-"]
 
-    # def add_rule(self, key, value):
-    #     valid_entry = self.assert_valid_entry(key, value)
-    #     if not valid_entry:
-    #         error_dialog = QErrorMessage()
-    #         error_dialog.showMessage("""Please input valid key and value.""")
-    #         return error_dialog.exec()
-
-    #     else:
-    #         self.rules[key] = value
-    #         return
-
     def add_ruleset(self, name, rules):
         for k, v in rules.items():
             # valid_entry = self.assert_valid_entry(k, v)
@@ -239,11 +222,3 @@ class Data:
         key_error = any(c not in self.alphabet for c in str(key))
         value_error = any(c not in self.alphabet for c in str(value))
         return not key_error and not value_error
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = Window()
-    window.show()
-
-    sys.exit(app.exec())
