@@ -12,16 +12,20 @@ from PyQt6.QtWidgets import (
 
 
 class RuleInputDialog(QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, editing=False):
         super().__init__(parent)
 
         if parent is not None:
             self.data = parent.data
-        self.createItems()
+        self.createItems(editing)
         self.generateLayout()
 
-    def createItems(self):
+    def createItems(self, editing):
         self.keyEntry = QLineEdit()
+
+        if editing:
+            current_rule = self.parent.rulesList.currentItem.text()
+            # key, value =
         self.keyEntry.setPlaceholderText("Enter rule key")
 
         self.valueEntry = QLineEdit()
@@ -115,7 +119,7 @@ class AddRuleSetDialog(QDialog):
         self.editRuleButton.setText("Edit rule")
         self.removeRuleButton.setText("Remove rule")
         self.addRuleButton.clicked.connect(self.add_rule)
-        # self.editRuleButton.clicked.connect(self.edit_rule)
+        self.editRuleButton.clicked.connect(self.edit_rule)
         self.removeRuleButton.clicked.connect(self.remove_rule)
         # self.addRuleButton.clicked.connect(self.add_rule)
         # self.editRuleButton.clicked.connect(self.edit_rule)
@@ -151,6 +155,9 @@ class AddRuleSetDialog(QDialog):
             rule_str = key + " -> " + value
             self.rulesList.addItem(rule_str)
             self.rulesDict[key] = value
+
+    def edit_rule(self):
+        rule_entry = RuleInputDialog(self)
 
     def remove_rule(self):
         current_item = self.rulesList.currentItem()
