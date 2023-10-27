@@ -133,6 +133,8 @@ class Window(QWidget):
             self.rulesetList.addItem(rulesetName)
 
     def edit_rule_set(self):
+        if len(self.rulesetList.selectedItems()) == 0:
+            return
         ruleset_entry = AddRuleSetDialog(self, editing=True)
         result = ruleset_entry.exec()
         if result:
@@ -152,10 +154,14 @@ class Window(QWidget):
             self.axiomList.addItem(axiom)
 
     def remove_ruleset(self):
+        if len(self.rulesetList.selectedItems()) == 0:
+            return
         current_item = self.rulesetList.currentItem()
         self.rulesetList.takeItem(int(self.rulesetList.row(current_item)))
 
     def remove_axiom(self):
+        if len(self.axiomList.selectedItems()) == 0:
+            return
         current_item = self.axiomList.currentItem()
         self.axiomList.takeItem(int(self.axiomList.row(current_item)))
 

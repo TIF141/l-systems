@@ -208,6 +208,8 @@ class AddRuleSetDialog(QDialog):
             self.rulesDict[key] = value
 
     def edit_rule(self):
+        if len(self.rulesList.selectedItems()) == 0:
+            return
         rule_entry = RuleInputDialog(self, editing=True)
         result = rule_entry.exec()
         if result:
@@ -223,5 +225,7 @@ class AddRuleSetDialog(QDialog):
                 self.rulesDict[key] = value
 
     def remove_rule(self):
+        if len(self.rulesList.selectedItems()) == 0:
+            return
         current_item = self.rulesList.currentItem()
         self.rulesList.takeItem(int(self.rulesList.row(current_item)))
