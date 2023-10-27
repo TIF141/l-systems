@@ -191,7 +191,8 @@ class Window(QWidget):
                 self.label.setPixmap(pixmap)
 
             if self.saveButton.isHidden():
-                self.layout = self.layout().addWidget(self.saveButton, 7, 0, 1, 1)
+                pos = (7, 0, 1, 1)
+                self.layout = self.layout().addWidget(self.saveButton, *pos)
                 self.saveButton.show()
 
         except AttributeError:
@@ -209,10 +210,12 @@ class Window(QWidget):
     def save_img(self):
         p = self.label.pixmap()
         f, _ = QFileDialog.getSaveFileName(self, "Save file", "", "*.jpg")
-        if f.endswith((".png", ".PNG", ".jpg", ".JPG", ".jpeg", ".JPEG")):
-            p.save(f)
+        if f == "":
+            return
         if len(f.split(".")) > 1:
             return
+        if f.endswith((".png", ".PNG", ".jpg", ".JPG", ".jpeg", ".JPEG")):
+            p.save(f)
         else:
             p.save(f + ".png")
 
