@@ -2,7 +2,7 @@ import numpy as np
 
 
 class Lsys:
-    def __init__(self, alphabet, rules, ignore=""):
+    def __init__(self, alphabet, rules, ignore="+-F"):
         self.alphabet = alphabet
         self.rules = rules
         self.ignore = ignore  # + "[]"
