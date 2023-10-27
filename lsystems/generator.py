@@ -50,23 +50,24 @@ if __name__ == "__main__":
     from lsys import Lsys
     from draw import draw_coords
 
-    # test_lsys = Lsys(["A", "B"], {"A": "AB"})
-    # test_lsys.add_rules({"B": "AA"})
-
-    # test_generator = Generator(test_lsys, "A", 10)
-    # print(test_generator.generate())
-    # test_lsys = Lsys(["F", "f", "+", "-"], {"F": "F-F+F+FF-F-F+F"})
-    # test_lsys = Lsys(["F", "f", "+", "-"], {"F": "F-F+F"})
-    # test_gen = Generator(test_lsys, "F-F-F-F", 90, 4)
-    test_alphabet = ["F", "f", "+", "-", "[", "]"]
-    test_dict = {"F": "FF-[-F+F+F]+[+F-F-F]"}
-    test_lsys = Lsys(test_alphabet, test_dict)
-    test_gen = Generator(test_lsys, "F", 22.5, 2)
+    # test_lsys = Lsys(["F", "f", "+", "-", "[", "]"], {"F": "FF-[-F+F+F]+[+F-F-F]"})
+    test_lsys = Lsys(
+        ["F1", "F0", "+", "-", "[", "]"],
+        {
+            "0<0>0": "0",
+            "0<0>1": "1[-F1F1]",
+            "0<1>0": "1",
+            "0<1>1": "1",
+            "1<0>0": "0",
+            "1<0>1": "1F1",
+            "1<1>0": "1",
+            "1<1>1": "0",
+            "*<+>*": "-",
+            "*<->*": "+",
+        },
+        "+-F",
+    )
+    test_gen = Generator(test_lsys, "F1F1F1", 22.5, 7)
     steps, history, stack = test_gen.generate_tortoise()
-    # print(steps)
-    for i in stack:
-        print(i)
-    # print(history)
-    # print(history[-1])
-    print(type(history))
+    print(steps)
     draw_coords(history, 500)
