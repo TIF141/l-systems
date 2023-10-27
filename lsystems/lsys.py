@@ -18,7 +18,7 @@ class Lsys:
         if any(("<" or ">") in key for key in self.rules.keys()):
             for i, strict_predecessor in enumerate(predecessors):
                 if strict_predecessor not in ("F[]"):  # NEED TO CHANGE THIS
-                    print(f"Next predecessor {i}")
+                    # print(f"Next predecessor {i}")
 
                     if "*<" + strict_predecessor + ">*" in self.rules:
                         successors += self.rules["*<" + strict_predecessor + ">*"]
@@ -79,8 +79,8 @@ class Lsys:
                             + ">"
                             + right_context
                         )
-                        print(left_naive, strict_predecessor, right_naive)
-                        print(predecessor_context)
+                        # print(left_naive, strict_predecessor, right_naive)
+                        # print(predecessor_context)
                         if predecessor_context in self.rules:
                             # print(predecessor_context)
                             successors += self.rules[predecessor_context]
