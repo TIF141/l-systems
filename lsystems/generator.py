@@ -45,32 +45,6 @@ class Generator:
                     tort.prev_draw = False
         return steps, tort.get_history(), self.stack
 
-    def generate_tortoise_contextdep(self):
-        predecessors = self.axiom
-        steps = [self.axiom]
-        tort = Tortoise()
-        for _ in range(self.nsteps):
-            # Clear history and angle after every iteration
-            tort.reset_state()
-            successors = self.lsys.step_contextdep(predecessors)
-            predecessors = successors
-            steps.append(successors)
-            for successor in successors:
-                if successor == "F":
-                    tort.forward(draw=True)
-                if successor == "-":
-                    tort.rotate(-self.branching_angle)
-                if successor == "+":
-                    tort.rotate(self.branching_angle)
-                if successor == "[":
-                    self.stack.append(np.array([*tort.pos, tort.angle_deg]))
-                if successor == "]":
-                    root = self.stack.pop(-1)
-                    tort.pos = root[:2]
-                    tort.angle_deg = root[2]
-                    tort.prev_draw = False
-        return steps, tort.get_history(), self.stack
-
 
 if __name__ == "__main__":
     from lsys import Lsys
@@ -94,6 +68,6 @@ if __name__ == "__main__":
         "+-F",
     )
     test_gen = Generator(test_lsys, "F1F1F1", 22.5, 7)
-    steps, history, stack = test_gen.generate_tortoise_contextdep()
+    steps, history, stack = test_gen.generate_tortoise()
     print(steps)
     draw_coords(history, 500)
