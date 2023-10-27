@@ -10,6 +10,7 @@ from PyQt6.QtWidgets import (
     QDoubleSpinBox,
     QGridLayout,
     QErrorMessage,
+    QFileDialog,
 )
 from lsystems.interface.input_dialogs import (
     AxiomInputDialog,
@@ -82,8 +83,13 @@ class Window(QWidget):
         self.generateButton.clicked.connect(self.generate)
 
         self.label = QLabel(self)
-
         self.label.setText("")
+
+        self.saveButton = QPushButton(self)
+        self.saveButton.setText("Save")
+        # self.saveButtonShowing = False
+        self.saveButton.hide()
+        self.saveButton.clicked.connect(self.save_img)
 
         self.createGridLayout()
         self.show()
@@ -163,6 +169,9 @@ class Window(QWidget):
         return rule_dict
 
     def generate(self):
+        if int(self.iterations.text()) == 0:
+            return
+
         try:
             current_ruleset = self.rulesetList.currentItem().text()
             rules = self.data.rules[current_ruleset]
@@ -181,6 +190,11 @@ class Window(QWidget):
                 pixmap = QPixmap(qimage)
                 self.label.setPixmap(pixmap)
 
+            if self.saveButton.isHidden():
+                pos = (7, 0, 1, 1)
+                self.layout = self.layout().addWidget(self.saveButton, *pos)
+                self.saveButton.show()
+
         except AttributeError:
             error_dialog = QErrorMessage()
             error_dialog.showMessage(
@@ -192,6 +206,18 @@ class Window(QWidget):
     def showOnLabel(self):
         pixmap = QPixmap("image.jpg")
         self.label.setPixmap(pixmap)
+
+    def save_img(self):
+        p = self.label.pixmap()
+        f, _ = QFileDialog.getSaveFileName(self, "Save file", "", "*.jpg")
+        if f == "":
+            return
+        if len(f.split(".")) > 1:
+            return
+        if f.endswith((".png", ".PNG", ".jpg", ".JPG", ".jpeg", ".JPEG")):
+            p.save(f)
+        else:
+            p.save(f + ".png")
 
 
 class Data:
