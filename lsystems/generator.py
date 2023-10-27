@@ -50,7 +50,8 @@ class Generator:
         steps = [self.axiom]
         tort = Tortoise()
         for _ in range(self.nsteps):
-            print("#### Next step")
+            # Clear history and angle after every iteration
+            tort.reset_state()
             successors = self.lsys.step_contextdep(predecessors)
             predecessors = successors
             steps.append(successors)
